@@ -65,51 +65,7 @@ private_route_table_b.create_route(DestinationCidrBlock='0.0.0.0/0', NatGatewayI
 private_route_table_b.associate_with_subnet(SubnetId=private_subnet_b.id)
 private_route_table_b.create_tags(Tags=[{'Key': 'Name', 'Value': var.private_route_table_b_name}])
 
-# Create ALB Security Group
 
-alb_security_group = ec2_client.create_security_group(
-    GroupName=var.alb_security_group_name,
-    Description='Security Group for Application Load Balancer Allowing Web Traffic',
-    VpcId=vpc.id  
-)
-
-ec2_client.authorize_security_group_ingress(
-    GroupId=alb_security_group['GroupId'],
-    IpPermissions=[
-        {
-            'IpProtocol': 'tcp',
-            'FromPort': 80,
-            'ToPort': 80,
-            'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
-        },
-        {
-            'IpProtocol': 'tcp',
-            'FromPort': 443,
-            'ToPort': 443,
-            'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
-        }
-    ]
-)
-
-# Create RDS Security Group
-rds_security_group = ec2_client.create_security_group(
-    GroupName=var.rds_security_group_name,
-    Description='Security Group for RDS MySQL Access',
-    VpcId=vpc.id
-)
-
-# Authorize MySQL traffic on port 3306 from within the VPC
-ec2_client.authorize_security_group_ingress(
-    GroupId=rds_security_group['GroupId'],
-    IpPermissions=[
-        {
-            'IpProtocol': 'tcp',
-            'FromPort': 3306,
-            'ToPort': 3306,
-            'IpRanges': [{'CidrIp': '10.0.0.0/16'}]  # Adjust the CIDR to match your VPC's CIDR block
-        }
-    ]
-)
 
 
 
@@ -177,8 +133,58 @@ access_point = efs_client.create_access_point(
     }
 )
 
+"""
+
+Create ALB
+
+"""
 
 
+# Create ALB Security Group
+
+alb_security_group = ec2_client.create_security_group(
+    GroupName=var.alb_security_group_name,
+    Description='Security Group for Application Load Balancer Allowing Web Traffic',
+    VpcId=vpc.id  
+)
+
+ec2_client.authorize_security_group_ingress(
+    GroupId=alb_security_group['GroupId'],
+    IpPermissions=[
+        {
+            'IpProtocol': 'tcp',
+            'FromPort': 80,
+            'ToPort': 80,
+            'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
+        },
+        {
+            'IpProtocol': 'tcp',
+            'FromPort': 443,
+            'ToPort': 443,
+            'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
+        }
+    ]
+)
+
+# Create RDS Security Group
+rds_security_group = ec2_client.create_security_group(
+    GroupName=var.rds_security_group_name,
+    Description='Security Group for RDS MySQL Access',
+    VpcId=vpc.id
+)
+
+# Authorize MySQL traffic on port 3306 from within the VPC
+ec2_client.authorize_security_group_ingress(
+    GroupId=rds_security_group['GroupId'],
+    IpPermissions=[
+        {
+            'IpProtocol': 'tcp',
+            'FromPort': 3306,
+            'ToPort': 3306,
+            'IpRanges': [{'CidrIp': '10.0.0.0/16'}]  # Adjust the CIDR to match your VPC's CIDR block
+        }
+    ]
+)
 
 
 

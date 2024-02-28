@@ -35,12 +35,12 @@ eip_nat_gateway_b_name = 'wordpress-eip-nat-gateway-b'
 nat_gateway_a_name = 'wordpress-nat-gateway-a'
 nat_gateway_b_name = 'wordpress-nat-gateway-b'
 
-## ROute Tables
+## Route Tables
 public_route_table_name = 'wordpress-public-route-table'
 private_route_table_a_name = 'wordpress-private-route-table-a'
 private_route_table_b_name = 'wordpress-private-route-table-b'
 
-## Secuirty Groups
+## Security Groups
 alb_security_group_name = 'ALB_group'
 rds_security_group_name = 'RDS_group'
 efs_security_group_name = 'EFS_group'

@@ -244,5 +244,120 @@ def main():
         print(f"Failed to get or create Route Table: {e}")
         return None
 
+    # Create a Network ACL for the public subnet
+    public_nacl = ec2_client.create_network_acl(VpcId=vpc.id)
+    ec2_client.create_network_acl_entry(
+        NetworkAclId=public_nacl['NetworkAcl']['NetworkAclId'],
+        RuleNumber=100,
+        Protocol="-1",
+        RuleAction="allow",
+        Egress=False,
+        CidrBlock="0.0.0.0/0",
+        PortRange={'From': 0, 'To': 65535},
+    )
+    ec2_client.create_network_acl_entry(
+        NetworkAclId=public_nacl['NetworkAcl']['NetworkAclId'],
+        RuleNumber=100,
+        Protocol="-1",
+        RuleAction="allow",
+        Egress=True,
+        CidrBlock="0.0.0.0/0",
+        PortRange={'From': 0, 'To': 65535},
+    )
+
+    # Associate the Network ACL with the public subnet
+    ec2_client.associate_network_acl(NetworkAclId=public_nacl['NetworkAcl']['NetworkAclId'], SubnetId=public_subnet_a.id)
+    ec2_client.associate_network_acl(NetworkAclId=public_nacl['NetworkAcl']['NetworkAclId'], SubnetId=public_subnet_b.id)
+
+    # Repeat for private subnets if needed
+    # Create a Network ACL for the private subnet
+    private_nacl = ec2_client.create_network_acl(VpcId=vpc.id)
+    ec2_client.create_tags(Resources=[private_nacl['NetworkAcl']['NetworkAclId']], Tags=[{'Key': 'Name', 'Value': 'PrivateSubnetNACL'}])
+
+    # Add ingress rule to allow all traffic
+    ec2_client.create_network_acl_entry(
+        NetworkAclId=private_nacl['NetworkAcl']['NetworkAclId'],
+        RuleNumber=100,
+        Protocol="-1",  # -1 means all protocols
+        RuleAction="allow",
+        Egress=False,  # False indicates ingress
+        CidrBlock="0.0.0.0/0",
+        PortRange={'From': 0, 'To': 65535}
+    )
+
+    # Add egress rule to allow all traffic
+    ec2_client.create_network_acl_entry(
+        NetworkAclId=private_nacl['NetworkAcl']['NetworkAclId'],
+        RuleNumber=100,
+        Protocol="-1",  # -1 means all protocols
+        RuleAction="allow",
+        Egress=True,  # True indicates egress
+        CidrBlock="0.0.0.0/0",
+        PortRange={'From': 0, 'To': 65535}
+    )
+
+    # Associate the Network ACL with the private subnets
+    ec2_client.associate_network_acl(NetworkAclId=private_nacl['NetworkAcl']['NetworkAclId'], SubnetId=private_subnet_a.id)
+    ec2_client.associate_network_acl(NetworkAclId=private_nacl['NetworkAcl']['NetworkAclId'], SubnetId=private_subnet_b.id)
+
+
+    # Create an RDS MySQL instance (simplified example)
+    rds_instance = rds_client.create_db_instance(
+        DBName=var.db_name,
+        DBInstanceIdentifier=var.db_instance_identifier,
+        AllocatedStorage=20,
+        DBInstanceClass=var.db_instance_class,
+        Engine='mysql',
+        MasterUsername=var.db_master_username,
+        MasterUserPassword=var.db_master_password,
+        VpcSecurityGroupIds=[rds_security_group['GroupId']],
+        Tags=[{'Key': 'Name', 'Value': 'MyRDSInstance'}]
+    )
+
+    # Create an EFS filesystem
+    efs_response = efs_client.create_file_system(
+        CreationToken="my-efs",
+        PerformanceMode="generalPurpose",
+        Encrypted=True,
+        Tags=[{'Key': 'Name', 'Value': 'MyEFS'}]
+    )
+
+    # Create an ALB
+    alb_response = elbv2_client.create_load_balancer(
+        Name=var.alb_name,
+        Subnets=[public_subnet_a.id, public_subnet_b.id],
+        SecurityGroups=[alb_security_group['GroupId']],
+        Scheme='internet-facing',
+        Tags=[{'Key': 'Name', 'Value': var.alb_name}],
+        Type='application'
+    )
+
+    # Create a target group
+    target_group = elbv2_client.create_target_group(
+        Name=var.target_group_name,
+        Protocol='HTTP',
+        Port=80,
+        VpcId=vpc.id,
+        HealthCheckProtocol='HTTP',
+        HealthCheckPath='/',
+        TargetType='instance'
+    )
+
+    # Create a listener
+    listener = elbv2_client.create_listener(
+        LoadBalancerArn=alb_response['LoadBalancers'][0]['LoadBalancerArn'],
+        Protocol='HTTP',
+        Port=80,
+        DefaultActions=[
+            {
+                'Type': 'forward',
+                'TargetGroupArn': target_group['TargetGroups'][0]['TargetGroupArn']
+            }
+        ]
+    )
+
+
+
+
 if __name__ == "__main__":
     main()
