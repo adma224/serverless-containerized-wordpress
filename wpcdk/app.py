@@ -1,14 +1,17 @@
-#!/usr/bin/env python3
-
-import aws_cdk as core
+from aws_cdk import App
 from stacks.network_stack import NetworkStack
-from stacks.efs_stack import EfsStack
+from stacks.alb_stack import AlbStack
 from stacks.rds_stack import RdsStack
+from stacks.efs_stack import EfsStack
 
-app = core.App()
+app = App()
 
-network_stack = NetworkStack(app, "NetworkStack", env={'region': 'us-east-1'})
-#efs_stack = EfsStack(app, "EfsStack", vpc_stack=vpc_stack, env={'region': 'us-east-1'})
-#rds_stack = RdsStack(app, "RdsStack", vpc_stack=vpc_stack, env={'region': 'us-east-1'})
+# Instantiate the NetworkStack
+network_stack = NetworkStack(app, "NetworkStack")
+
+# Instantiate other stacks, passing the network_stack as needed
+#alb_stack = AlbStack(app, "AlbStack", network_stack=network_stack)
+rds_stack = RdsStack(app, "RdsStack", network_stack=network_stack)
+#efs_stack = EfsStack(app, "EfsStack", network_stack=network_stack)
 
 app.synth()
