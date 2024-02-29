@@ -11,7 +11,7 @@ class NetworkStack(Stack):
         self.vpc = ec2.Vpc(
             self, "MyVPC",
             max_azs=2,
-            cidr="10.0.0.0/16",  # Corrected from 'vpc_cidr' to 'cidr'
+            ip_addresses=ec2.IpAddresses.cidr("10.0.0.0/16"),  # Corrected from 'vpc_cidr' to 'cidr'
             subnet_configuration=[
                 ec2.SubnetConfiguration(
                     name="PublicSubnet", 

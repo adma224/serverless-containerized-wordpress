@@ -10,8 +10,8 @@ app = App()
 network_stack = NetworkStack(app, "NetworkStack")
 
 # Instantiate other stacks, passing the network_stack as needed
-#alb_stack = AlbStack(app, "AlbStack", network_stack=network_stack)
+alb_stack = AlbStack(app, "AlbStack", network_stack=network_stack)
 rds_stack = RdsStack(app, "RdsStack", network_stack=network_stack)
-#efs_stack = EfsStack(app, "EfsStack", network_stack=network_stack)
+efs_stack = EfsStack(app, "EfsStack", network_stack=network_stack)
 
 app.synth()

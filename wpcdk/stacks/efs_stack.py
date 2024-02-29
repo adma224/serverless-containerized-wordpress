@@ -1,9 +1,14 @@
 from aws_cdk import (
-    Stack,
-    aws_ec2 as ec2,
-    aws_efs as efs,
-    Duration
+  Stack, 
+  RemovalPolicy
 )
+import aws_cdk as cdk
+
+from aws_cdk import (
+  aws_ec2 as ec2,
+  aws_efs as efs
+)
+
 from constructs import Construct
 from .network_stack import NetworkStack  # Adjust the import path as necessary
 

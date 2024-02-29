@@ -1,49 +1,52 @@
 from aws_cdk import (
-    Stack,
     aws_ec2 as ec2,
     aws_rds as rds,
-    Duration
+    aws_secretsmanager as secretsmanager,
+    Stack,
 )
 from constructs import Construct
-from .network_stack import NetworkStack  # Adjust the import path as necessary
+from .network_stack import NetworkStack
 
-class RdsStack(Stack):
+class AuroraServerlessStack(Stack):
     def __init__(self, scope: Construct, id: str, network_stack: NetworkStack, **kwargs):
         super().__init__(scope, id, **kwargs)
 
-        # Create a security group for RDS within the VPC provided by network_stack
-        rds_security_group = ec2.SecurityGroup(
-            self, "RDSSecurityGroup",
-            vpc=network_stack.vpc,
-            description="Security Group for RDS instance",
-        )
-        # Allow inbound MySQL/MariaDB access (default port 3306)
-        rds_security_group.add_ingress_rule(
-            ec2.Peer.any_ipv4(),
-            ec2.Port.tcp(3306),
-            "Allow MySQL/MariaDB access"
+        # Define the username for the database
+        username = 'admin'
+
+        # Create a secret in AWS Secrets Manager for the RDS credentials
+        db_credentials_secret = secretsmanager.Secret(
+            self, "DBCredentialsSecret",
+            generate_secret_string=secretsmanager.SecretStringGenerator(
+                secret_string_template='{"username": "%s"}' % username,
+                generate_string_key="password",
+                exclude_characters='"@/\\',
+            )
         )
 
-        # Define the RDS instance
-        self.db_instance = rds.DatabaseInstance(
-            self, "MyRDSInstance",
-            engine=rds.DatabaseInstanceEngine.mysql(
-                version=rds.MysqlEngineVersion.VER_8_0_19
-            ),
-            instance_type=ec2.InstanceType.of(
-                ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.MICRO
+        # Create a security group for the Aurora Serverless DB Cluster within the VPC
+        db_security_group = ec2.SecurityGroup(
+            self, "DBSecurityGroup",
+            vpc=network_stack.vpc,
+            description="Security Group for Aurora Serverless DB Cluster",
+        )
+        db_security_group.add_ingress_rule(
+            ec2.Peer.any_ipv4(),
+            ec2.Port.tcp(3306),
+            "Allow MySQL access"
+        )
+
+        # Define the Aurora Serverless DB Cluster
+        self.db_cluster = rds.ServerlessCluster(
+            self, "MyAuroraServerlessCluster",
+            engine=rds.DatabaseClusterEngine.aurora_mysql(
+                version=rds.AuroraMysqlEngineVersion.VER_2_08_1
             ),
             vpc=network_stack.vpc,
+            credentials=rds.Credentials.from_secret(db_credentials_secret),  # Use credentials from Secrets Manager
+            security_groups=[db_security_group],
+            default_database_name="mydatabase",
             vpc_subnets=ec2.SubnetSelection(
-                subnet_type=ec2.SubnetType.PRIVATE_WITH_NAT
+                subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS
             ),
-            security_groups=[rds_security_group],
-            multi_az=False,
-            allocated_storage=20,
-            max_allocated_storage=100,
-            backup_retention=Duration.days(7),
-            deletion_protection=False,
-            database_name="mydatabase",
-            publicly_accessible=False,
-            auto_minor_version_upgrade=True,
         )

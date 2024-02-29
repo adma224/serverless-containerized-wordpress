@@ -48,10 +48,11 @@ class AlbStack(Stack):
 
         # Add a listener
         self.listener = self.alb.add_listener(
-            "Listener",
-            port=80,
-            open=True,
-            default_actions=[elbv2.ListenerAction.forward(target_groups=[self.target_group])]
+        "Listener",
+        port=80,
+        open=True  
         )
+        self.listener.add_target_groups('Target', target_groups=[self.target_group])
+
 
 
