@@ -63,23 +63,16 @@ cdk destroy
 This command will remove the resources defined by the CDK from your AWS account.
 ## File Structure
 ``` bash
-├── README.md                       # Project documentation
 ├── app.py                          # Entry point for the CDK application
 ├── stacks                          # Directory containing stack definitions
-│   ├── db_stack.py                 # Aurora Serverless database stack (rename if necessary)
-│   ├── efs_stack.py                # Elastic File System stack
-│   ├── fargate_stack.py            # Fargate service stack for WordPress
-│   └── network_stack.py            # Network infrastructure stack
-│   ├── __pycache__                 # Python cache files (ignore in version control)
-├── cdk.json                        # CDK configuration file
-├── cdk.out                         # CDK synthesis output (compiled templates and assets)
+│   ├── db_stack.py                     # Database stack
+│   ├── efs_stack.py                    # Elastic File System stack
+│   ├── fargate_stack.py                # Fargate service stack for WordPress
+│   └── network_stack.py                # Network infrastructure stack
+├── cdk.json                        # CDK configuration file 
+├── cdk.out                         # CDK synthesis output (compiled CloudFormation templates and assets)
 ├── requirements-dev.txt            # Development dependencies
 ├── requirements.txt                # Project dependencies
-├── source.bat                      # Script to source environment variables (optional)
-│   ├── db_stack.py                 # Aurora Serverless database stack (rename if necessary)
-│   ├── efs_stack.py                # Elastic File System stack
-│   ├── fargate_stack.py            # Fargate service stack for WordPress
-│   └── network_stack.py            # Network infrastructure stack
 └── tests                           # Test directory (Empty at the moment)
 ```
 
