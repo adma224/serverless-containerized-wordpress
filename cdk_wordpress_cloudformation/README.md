@@ -14,33 +14,41 @@ Ensure you have the following installed:
 
 ## Setup
 
-1. **Configure AWS CLI**
+#### Configure AWS CLI
 
-   Make sure you have configured the AWS CLI with your credentials and default region. You can do this by running:
+Make sure you have configured the AWS CLI with your credentials and default region. You can do this by running:
+```bash
+aws configure
+```
 
-   ```bash
-   aws configure
+#### Clone the Repository
 
-Clone the Repository
 Clone this repository to your local machine to get started.
-
-git clone <repository-url>
+```bash
+git clone [<repository-url>](https://github.com/adma224/serverless-containerized-wordpress/tree/main)
 cd wpcdk
+```
 Install Python Dependencies
 
 Install the required Python dependencies listed in the requirements.txt file.
 
+```bash
 pip install -r requirements.txt
+```
 Bootstrap the AWS Environment for CDK
 
 If this is your first time using CDK in this AWS account/region, you'll need to bootstrap your environment. Bootstrapping is a one-time operation for each AWS account and region.
 
+```bash
 cdk bootstrap
+```
 Deploy the CDK Stack
 
 Deploy your stack to AWS. Ensure you are in the directory containing app.py before running the deployment command.
 
+```bash
 cdk deploy
+```
 This command deploys the entire infrastructure defined in your CDK app. Follow any prompts to approve the deployment.
 
 Usage
@@ -49,5 +57,7 @@ After deployment, your WordPress site will be accessible through the URL of the 
 Clean Up
 To avoid incurring future charges, remember to delete the resources when you're done.
 
+```bash
 cdk destroy
+```
 This command will remove the resources defined by the CDK from your AWS account.
