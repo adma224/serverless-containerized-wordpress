@@ -48,18 +48,6 @@ The README.md files of each of these folders has more in-depth information about
 
 **Security Groups** - I define several throughout the stacks for different purposes, such as controlling access to the RDS database, EFS, and the application itself. They act as a virtual firewall for the associated resources.
 
-### SQL Database
-
-**Amazon RDS Aurora Serverless** - Defined in AuroraServerlessStack, it provides a scalable and serverless relational database which automatically starts up, shuts down, and scales with the application's needs.
-
-### File System
-
-
-
-**Amazon EFS (Elastic File System)** - Set up in EfsStack, it offers a simple, scalable, elastic file storage for use with AWS Cloud services and on-premises resources. It's particularly useful for storing the WordPress content that needs to be shared across multiple instances.
-
-**Amazon EFS Access Points** - Created within EfsStack to simplify file system access. This ensures my application has the appropriate file permissions and directory for the WordPress content.
-
 ### Containers
 
 **Amazon ECS Service** - Implicitly created within FargateStack, it maintains the desired count of instances of the task definition. It integrates with the ALB for high availability and fault tolerance.
@@ -69,6 +57,16 @@ The README.md files of each of these folders has more in-depth information about
 **Amazon ECS Task Definition** - Also managed by FargateStack. It's a blueprint for my application that describes the container and volume configuration.
 
 **ECS Cluster** - Although implicitly created in the FargateStack, it's crucial as it provides the networking and orchestration framework for my containerized application.
+
+### SQL Database
+
+**Amazon RDS Aurora Serverless** - Defined in AuroraServerlessStack, it provides a scalable and serverless relational database which automatically starts up, shuts down, and scales with the application's needs.
+
+### File System
+
+**Amazon EFS (Elastic File System)** - Set up in EfsStack, it offers a simple, scalable, elastic file storage for use with AWS Cloud services and on-premises resources. It's particularly useful for storing the WordPress content that needs to be shared across multiple instances.
+
+**Amazon EFS Access Points** - Created within EfsStack to simplify file system access. This ensures my application has the appropriate file permissions and directory for the WordPress content.
 
 ### Other
 
