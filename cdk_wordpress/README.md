@@ -4,6 +4,9 @@
 Deploy a serverless WordPress site on AWS utilizing the AWS Cloud Development Kit (CDK). This setup includes a VPC, ECS Fargate, RDS Aurora Serverless, EFS for shared storage, and an Application Load Balancer.
 
 ## File Structure
+
+The python code that uses the Cloud Development Kit (CDK) will be located within ``app.py`` and the python files located within ``stacks`` folder.
+
 ``` bash
 ├── app.py                          # Entry point for the CDK application
 ├── stacks                          # Directory containing stack definitions
