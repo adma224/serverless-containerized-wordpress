@@ -40,7 +40,7 @@ The README.md files of each of these folders has more in-depth information about
 
 ## Overview of Resources
 
-#### Network
+### Network
 
 **Amazon VPC (Virtual Private Cloud)** - Explicitly defined in my NetworkStack. This acts as the networking foundation, providing an isolated section of the AWS Cloud where I can launch AWS resources in a defined virtual network.
 
@@ -48,11 +48,11 @@ The README.md files of each of these folders has more in-depth information about
 
 **Security Groups** - I define several throughout the stacks for different purposes, such as controlling access to the RDS database, EFS, and the application itself. They act as a virtual firewall for the associated resources.
 
-#### SQL Database
+### SQL Database
 
 **Amazon RDS Aurora Serverless** - Defined in AuroraServerlessStack, it provides a scalable and serverless relational database which automatically starts up, shuts down, and scales with the application's needs.
 
-#### File System
+### File System
 
 
 
@@ -60,7 +60,7 @@ The README.md files of each of these folders has more in-depth information about
 
 **Amazon EFS Access Points** - Created within EfsStack to simplify file system access. This ensures my application has the appropriate file permissions and directory for the WordPress content.
 
-#### Containers
+### Containers
 
 **Amazon ECS Service** - Implicitly created within FargateStack, it maintains the desired count of instances of the task definition. It integrates with the ALB for high availability and fault tolerance.
 
@@ -70,7 +70,7 @@ The README.md files of each of these folders has more in-depth information about
 
 **ECS Cluster** - Although implicitly created in the FargateStack, it's crucial as it provides the networking and orchestration framework for my containerized application.
 
-#### Other
+### Other
 
 **AWS Secrets Manager** - Utilized in AuroraServerlessStack for securely storing and managing database credentials. This allows my application to access the database without hardcoding sensitive information.
 
