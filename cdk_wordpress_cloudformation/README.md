@@ -3,6 +3,21 @@
 
 Deploy a serverless WordPress site on AWS utilizing the AWS Cloud Development Kit (CDK). This setup includes a VPC, ECS Fargate, RDS Aurora Serverless, EFS for shared storage, and an Application Load Balancer.
 
+## File Structure
+``` bash
+├── app.py                          # Entry point for the CDK application
+├── stacks                          # Directory containing stack definitions
+│   ├── db_stack.py                     # Database stack
+│   ├── efs_stack.py                    # Elastic File System stack
+│   ├── fargate_stack.py                # Fargate service stack for WordPress
+│   └── network_stack.py                # Network infrastructure stack
+├── cdk.json                        # CDK configuration file 
+├── cdk.out                         # CDK synthesis output (compiled CloudFormation templates and assets)
+├── requirements-dev.txt            # Development dependencies
+├── requirements.txt                # Project dependencies
+└── tests                           # Test directory (Empty at the moment)
+```
+
 ## Prerequisites
 
 Ensure you have the following installed:
@@ -61,18 +76,5 @@ To avoid incurring future charges, remember to delete the resources when you're 
 cdk destroy
 ```
 This command will remove the resources defined by the CDK from your AWS account.
-## File Structure
-``` bash
-├── app.py                          # Entry point for the CDK application
-├── stacks                          # Directory containing stack definitions
-│   ├── db_stack.py                     # Database stack
-│   ├── efs_stack.py                    # Elastic File System stack
-│   ├── fargate_stack.py                # Fargate service stack for WordPress
-│   └── network_stack.py                # Network infrastructure stack
-├── cdk.json                        # CDK configuration file 
-├── cdk.out                         # CDK synthesis output (compiled CloudFormation templates and assets)
-├── requirements-dev.txt            # Development dependencies
-├── requirements.txt                # Project dependencies
-└── tests                           # Test directory (Empty at the moment)
-```
+
 
