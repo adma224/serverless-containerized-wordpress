@@ -25,7 +25,7 @@ aws configure
 
 Clone this repository to your local machine to get started.
 ```bash
-git clone [<repository-url>](https://github.com/adma224/serverless-containerized-wordpress/tree/main)
+git clone https://github.com/adma224/serverless-containerized-wordpress/tree/main
 cd wpcdk
 ```
 Install Python Dependencies
@@ -61,3 +61,25 @@ To avoid incurring future charges, remember to delete the resources when you're 
 cdk destroy
 ```
 This command will remove the resources defined by the CDK from your AWS account.
+## File Structure
+``` bash
+├── README.md                       # Project documentation
+├── app.py                          # Entry point for the CDK application
+├── stacks                          # Directory containing stack definitions
+│   ├── db_stack.py                 # Aurora Serverless database stack (rename if necessary)
+│   ├── efs_stack.py                # Elastic File System stack
+│   ├── fargate_stack.py            # Fargate service stack for WordPress
+│   └── network_stack.py            # Network infrastructure stack
+│   ├── __pycache__                 # Python cache files (ignore in version control)
+├── cdk.json                        # CDK configuration file
+├── cdk.out                         # CDK synthesis output (compiled templates and assets)
+├── requirements-dev.txt            # Development dependencies
+├── requirements.txt                # Project dependencies
+├── source.bat                      # Script to source environment variables (optional)
+│   ├── db_stack.py                 # Aurora Serverless database stack (rename if necessary)
+│   ├── efs_stack.py                # Elastic File System stack
+│   ├── fargate_stack.py            # Fargate service stack for WordPress
+│   └── network_stack.py            # Network infrastructure stack
+└── tests                           # Test directory (Empty at the moment)
+```
+
