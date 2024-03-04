@@ -1,4 +1,4 @@
-# Serverless Containerized WordPress Site with Infrastructure as Code via CloudFormation.
+# Serverless Containerized WordPress Site with Infrastructure as Code (IaC) via CloudFormation
 
 
 
