@@ -42,7 +42,7 @@ The README.md files of each of these folders has more in-depth information about
 
 **Amazon VPC (Virtual Private Cloud)** - Explicitly defined in my NetworkStack. This acts as the networking foundation, providing an isolated section of the AWS Cloud where I can launch AWS resources in a defined virtual network.
 
-**Amazon ECS (Elastic Container Service)** Fargate - Managed by FargateStack, it allows me to run containers without managing servers or clusters. I use Fargate to deploy the WordPress application in a serverless fashion.
+**Amazon ECS (Elastic Container Service) Fargate** - Managed by FargateStack, it allows me to run containers without managing servers or clusters. I use Fargate to deploy the WordPress application in a serverless fashion.
 
 **Amazon RDS Aurora Serverless** - Defined in AuroraServerlessStack, it provides a scalable and serverless relational database which automatically starts up, shuts down, and scales with the application's needs.
 
