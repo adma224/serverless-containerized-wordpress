@@ -1,4 +1,4 @@
-# Serverless Containerized WordPress Site with Infrastructure as Code via CloudFormation.
+# Serverless Containerized WordPress Site with Infrastructure as Code (IaC) via CloudFormation
 
 
 
@@ -40,24 +40,38 @@ The README.md files of each of these folders has more in-depth information about
 
 ## Overview of Resources
 
+### Network
+
 **Amazon VPC (Virtual Private Cloud)** - Explicitly defined in my NetworkStack. This acts as the networking foundation, providing an isolated section of the AWS Cloud where I can launch AWS resources in a defined virtual network.
-
-**Amazon ECS (Elastic Container Service)** Fargate - Managed by FargateStack, it allows me to run containers without managing servers or clusters. I use Fargate to deploy the WordPress application in a serverless fashion.
-
-**Amazon RDS Aurora Serverless** - Defined in AuroraServerlessStack, it provides a scalable and serverless relational database which automatically starts up, shuts down, and scales with the application's needs.
-
-**Amazon EFS (Elastic File System)** - Set up in EfsStack, it offers a simple, scalable, elastic file storage for use with AWS Cloud services and on-premises resources. It's particularly useful for storing the WordPress content that needs to be shared across multiple instances.
 
 **Application Load Balancer (ALB)** - Implicitly created by FargateStack through ECS patterns. The ALB automatically distributes incoming application traffic across multiple targets, such as ECS tasks, in multiple Availability Zones, increasing the fault tolerance of my application.
 
-**Amazon ECS Task Definition** - Also managed by FargateStack. It's a blueprint for my application that describes the container and volume configuration.
+**Security Groups** - I define several throughout the stacks for different purposes, such as controlling access to the RDS database, EFS, and the application itself. They act as a virtual firewall for the associated resources.
+
+### Containers
 
 **Amazon ECS Service** - Implicitly created within FargateStack, it maintains the desired count of instances of the task definition. It integrates with the ALB for high availability and fault tolerance.
 
-**Security Groups** - I define several throughout the stacks for different purposes, such as controlling access to the RDS database, EFS, and the application itself. They act as a virtual firewall for the associated resources.
+**Amazon ECS Fargate** - Managed by FargateStack, it allows me to run containers without managing servers or clusters. I use Fargate to deploy the WordPress application in a serverless fashion.
 
-**AWS Secrets Manager** - Utilized in AuroraServerlessStack for securely storing and managing database credentials. This allows my application to access the database without hardcoding sensitive information.
+**Amazon ECS Task Definition** - Also managed by FargateStack. It's a blueprint for my application that describes the container and volume configuration.
 
 **ECS Cluster** - Although implicitly created in the FargateStack, it's crucial as it provides the networking and orchestration framework for my containerized application.
 
+### SQL Database
+
+**Amazon RDS Aurora Serverless** - Defined in AuroraServerlessStack, it provides a scalable and serverless relational database which automatically starts up, shuts down, and scales with the application's needs.
+
+### File System
+
+**Amazon EFS (Elastic File System)** - Set up in EfsStack, it offers a simple, scalable, elastic file storage for use with AWS Cloud services and on-premises resources. It's particularly useful for storing the WordPress content that needs to be shared across multiple instances.
+
 **Amazon EFS Access Points** - Created within EfsStack to simplify file system access. This ensures my application has the appropriate file permissions and directory for the WordPress content.
+
+### Other
+
+**AWS Secrets Manager** - Utilized in AuroraServerlessStack for securely storing and managing database credentials. This allows my application to access the database without hardcoding sensitive information.
+
+
+
+
