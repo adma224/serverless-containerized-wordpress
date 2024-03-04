@@ -1,5 +1,11 @@
 # Serverless Containerized WordPress Site with Infrastructure as Code via CloudFormation.
 
+
+
+[Infrastructure Diagram](https://github.com/adma224/serverless-containerized-wordpress/blob/main/infrastructure_diagram.png)
+
+[Design Narrative + Video](http://54.148.225.217/)
+
 This project uses **WordPress** container images and leverages AWS Fargate as the serverless orchestration engine. This project idea and some of its architecture is based on Parmar and Hayes's [Running WordPress on Amazon ECS and AWS Fargate with Amazon EFS](https://aws.amazon.com/blogs/containers/running-wordpress-amazon-ecs-fargate-ecs/) with the following adjustments for scalability, interpretability, and achieving a fully serverless architecture:
 
 - **Amazon Cloud Development Kit (CDK)** is used for developing a CloudFormation template with Python code. This allows for deploying our entire application using Infrastructure as Code principles, instead of using a combination of CLI Console Commands and a CloudFormation Template as the article suggests. Using the CDK allows us to develop a much richer and complete CloudFormation Template but also allows us to go back to our code and change our "Stacks" whenever we want to make changes to the architecture, rather than editing the CloudFormation Template directly.
