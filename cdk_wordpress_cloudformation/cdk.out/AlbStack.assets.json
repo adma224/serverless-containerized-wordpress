@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "61942a630b929211f224aabd924f43700175507abf6b18bab6204c13bef83488": {
+      "source": {
+        "path": "AlbStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "61942a630b929211f224aabd924f43700175507abf6b18bab6204c13bef83488.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

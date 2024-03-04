@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "970566f1603f7e74a53922e8bcba0dd0096f782e3f47a987d6e65ca8a22a2f70": {
+      "source": {
+        "path": "EfsStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "970566f1603f7e74a53922e8bcba0dd0096f782e3f47a987d6e65ca8a22a2f70.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
