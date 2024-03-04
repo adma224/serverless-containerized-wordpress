@@ -5,4 +5,4 @@ __pycache__
 .venv
 *.egg-info
 source.bat
-
+.DS_Store
