@@ -1,6 +1,5 @@
 from aws_cdk import App
 from stacks.network_stack import NetworkStack
-from stacks.alb_stack import AlbStack
 from stacks.rds_stack import RdsStack
 from stacks.efs_stack import EfsStack
 
