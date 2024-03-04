@@ -1,58 +1,63 @@
 
-# Welcome to your CDK Python project!
+# Serverless WordPress Deployment with AWS CDK
 
-This is a blank project for CDK development with Python.
+Deploy a serverless WordPress site on AWS utilizing the AWS Cloud Development Kit (CDK). This setup includes a VPC, ECS Fargate, RDS Aurora Serverless, EFS for shared storage, and an Application Load Balancer.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Prerequisites
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+Ensure you have the following installed:
 
-To manually create a virtualenv on MacOS and Linux:
+- **AWS CLI**: [Install/update the AWS CLI](https://aws.amazon.com/cli/)
+- **Node.js**: [Install Node.js](https://nodejs.org/) (including NPM)
+- **AWS CDK**: After installing Node.js, install the AWS CDK by running `npm install -g aws-cdk`
+- **Python**: [Install Python](https://www.python.org/downloads/)
 
-```
-$ python3 -m venv .venv
-```
+## Setup
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+1. **Configure AWS CLI**
 
-```
-$ source .venv/bin/activate
-```
+   Make sure you have configured the AWS CLI with your credentials and default region. You can do this by running:
 
-If you are a Windows platform, you would activate the virtualenv like this:
+   ```bash
+   aws configure
+Clone the Repository
 
-```
-% .venv\Scripts\activate.bat
-```
+Clone this repository to your local machine to get started.
 
-Once the virtualenv is activated, you can install the required dependencies.
+bash
+Copy code
+git clone <repository-url>
+cd wpcdk
+Install Python Dependencies
 
-```
-$ pip install -r requirements.txt
-```
+Install the required Python dependencies listed in the requirements.txt file.
 
-At this point you can now synthesize the CloudFormation template for this code.
+bash
+Copy code
+pip install -r requirements.txt
+Bootstrap the AWS Environment for CDK
 
-```
-$ cdk synth
-```
+If this is your first time using CDK in this AWS account/region, you'll need to bootstrap your environment. Bootstrapping is a one-time operation for each AWS account and region.
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+bash
+Copy code
+cdk bootstrap
+Deploy the CDK Stack
 
-## Useful commands
+Deploy your stack to AWS. Ensure you are in the directory containing app.py before running the deployment command.
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+bash
+Copy code
+cdk deploy
+This command deploys the entire infrastructure defined in your CDK app. Follow any prompts to approve the deployment.
 
-Enjoy!
+Usage
+After deployment, your WordPress site will be accessible through the URL of the Application Load Balancer created by the stack. You can find the ALB URL in the Outputs section of your CloudFormation stack in the AWS Management Console.
+
+Clean Up
+To avoid incurring future charges, remember to delete the resources when you're done.
+
+bash
+Copy code
+cdk destroy
+This command will remove the resources defined by the CDK from your AWS account.
