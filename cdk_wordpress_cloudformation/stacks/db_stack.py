@@ -16,7 +16,7 @@ class AuroraServerlessStack(Stack):
 
         # Create a secret in AWS Secrets Manager for the RDS credentials
         db_credentials_secret = secretsmanager.Secret(
-            self, "DBCredentialsSecret",
+            self, "db-credentials",
             generate_secret_string=secretsmanager.SecretStringGenerator(
                 secret_string_template='{"username": "%s"}' % username,
                 generate_string_key="password",
@@ -26,7 +26,7 @@ class AuroraServerlessStack(Stack):
 
         # Create a security group for the Aurora Serverless DB Cluster within the VPC
         db_security_group = ec2.SecurityGroup(
-            self, "DBSecurityGroup",
+            self, "db-group",
             vpc=network_stack.vpc,
             description="Security Group for Aurora Serverless DB Cluster",
         )
@@ -38,14 +38,14 @@ class AuroraServerlessStack(Stack):
 
         # Define the Aurora Serverless DB Cluster
         self.db_cluster = rds.ServerlessCluster(
-            self, "MyAuroraServerlessCluster",
+            self, "wp-serverless-cluster",
             engine=rds.DatabaseClusterEngine.aurora_mysql(
                 version=rds.AuroraMysqlEngineVersion.VER_2_08_1
             ),
             vpc=network_stack.vpc,
             credentials=rds.Credentials.from_secret(db_credentials_secret),  # Use credentials from Secrets Manager
             security_groups=[db_security_group],
-            default_database_name="mydatabase",
+            default_database_name="wp-db",
             vpc_subnets=ec2.SubnetSelection(
                 subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS
             ),

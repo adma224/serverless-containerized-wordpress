@@ -18,7 +18,7 @@ class EfsStack(Stack):
 
         # Create a security group for EFS within the network stack's VPC
         efs_security_group = ec2.SecurityGroup(
-            self, "EFSSecurityGroup",
+            self, "efs-group",
             vpc=network_stack.vpc,
             description="Security Group for EFS",
         )
@@ -32,7 +32,7 @@ class EfsStack(Stack):
 
         # Define the EFS FileSystem
         self.efs_file_system = efs.FileSystem(
-            self, "MyEFS",
+            self, "efs-wp-serverless",
             vpc=network_stack.vpc,
             security_group=efs_security_group,
             lifecycle_policy=efs.LifecyclePolicy.AFTER_7_DAYS,  # Automatically transition files to EFS Infrequent Access
@@ -43,7 +43,7 @@ class EfsStack(Stack):
         )
 
         # Optionally, you can create an EFS access point here
-        efs_access_point = self.efs_file_system.add_access_point("EFSAccessPoint",
+        efs_access_point = self.efs_file_system.add_access_point("efs-access-point",
             path="/export",
             posix_user=efs.PosixUser(uid="1001", gid="1001"),
             create_acl=efs.Acl(owner_uid="1001", owner_gid="1001", permissions="750"),
