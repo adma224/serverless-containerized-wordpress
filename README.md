@@ -15,14 +15,9 @@ That being said, the original article serves as a useful template for building o
 - Application Load Balancer
 - AWS Elastic File Server (EFS) for parallel file system deployment
 
-The architecture ensures high availability by deploying resources across multiple availability zones and automates resource provisioning using Boto3, the AWS SDK for Python.
+The architecture ensures high availability by deploying resources across multiple availability zones and automates resource provisioning using CloudFormation, the AWS CDK for Python.
 
 ## Boto3 vs CDK
-
-You may have noticed that there are two folders in this directory:
-
-- cdk_wordpress_cloudformation
-- boto3_wordpress_network
 
 When setting up this serverless WordPress project, I faced a choice: script everything with Boto3 for absolute control or use the AWS Cloud Development Kit (CDK) for its convenience and power. Here's why CDK became my go-to:
 
@@ -32,9 +27,9 @@ When setting up this serverless WordPress project, I faced a choice: script ever
 
 - **Abstraction:** CDK abstracts away the complexity without sacrificing control. It allows for defining high-level components that Boto3 handles manually, making my infrastructure code cleaner and more readable.
 
-That being said, I prefer to name every single one of my resources depending on the specific project and role they have within my application. Using Boto3 for the vpc configuration step is a preferred option since you manually create an provision AWS networking resources infividually, giving you the opportunity of providing them a name or other aws resource tags. Also, it allows you to explicilty create Networking resources for better control of what is beiung created. The CDK automatically provisions resources such as Application Load Balancers, NAT Gateways, and Internet Gateways with the creation of different aws resources (ECS Clusters, Private Subnet, and Public Subnet respectively). Also, the CDK does not allow an easy way to name each resource separately. For this reason I have included a separate folder for using Boto3 to provision networking resources.
+That being said, sometimes I prefer to name every single one of my resources depending on the specific project and role they have within my application. Using Boto3 for the vpc configuration step could be a preferred option since you manually create an provision AWS networking resources infividually, giving you the opportunity of providing them a name or other aws resource tags. 
 
-The README.md files of each of these folders has more in-depth information about the file structure, the breakdown of each file and its contents, and instructions on how to run them.
+For rapid application deployment I decided to go with the AWS CDK in Python.
 
 ## Overview of Resources
 
