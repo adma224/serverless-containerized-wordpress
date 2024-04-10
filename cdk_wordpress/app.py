@@ -6,10 +6,23 @@ from stacks.fargate_stack import FargateStack
 
 app = App()
 
-# Instantiate the NetworkStack
+
+"""
+
+The following stacks will be created and deployed
+
+- Network Stack: deploys 2 private subnets, 2 public subnets, and two AZs. Creates an ALB and an Iternet Gateway
+
+- Database Stack: creates an Aurora Serverless SQL Database and saves the credentials of the DB to Secrets Manager
+
+- EFS Stack: creates an elastic file system
+
+- Fargate Stack: creates a Fargate service, saves the wordpress container image to ECR, and configures the wordpress container to reference the Aurora DB and EFS
+
+"""
+
 network_stack = NetworkStack(app, "NetworkStack")
 
-# Instantiate other stacks, passing the network_stack as needed
 
 db_stack = AuroraServerlessStack(app, "RdsStack", network_stack=network_stack)
 efs_stack = EfsStack(app, "EfsStack", network_stack=network_stack)

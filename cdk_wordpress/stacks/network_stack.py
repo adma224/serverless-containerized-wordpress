@@ -7,11 +7,10 @@ class NetworkStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs):
         super().__init__(scope, id, **kwargs)
 
-        # Correctly initialize the VPC with the 'cidr' argument
         self.vpc = ec2.Vpc(
             self, "vpc-wp-serverless",
             max_azs=2,
-            ip_addresses=ec2.IpAddresses.cidr("10.0.0.0/16"),  # Corrected from 'vpc_cidr' to 'cidr'
+            ip_addresses=ec2.IpAddresses.cidr("10.0.0.0/16"), 
             subnet_configuration=[
                 ec2.SubnetConfiguration(
                     name="public-subnet", 
@@ -20,7 +19,7 @@ class NetworkStack(Stack):
                 ),
                 ec2.SubnetConfiguration(
                     name="private-subnet", 
-                    subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,  # Assuming this was already corrected
+                    subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS, 
                     cidr_mask=24
                 ),
             ],
@@ -30,7 +29,6 @@ class NetworkStack(Stack):
         )
 
 
-        # Example: Add an Internet Gateway for public subnets
         self.internet_gateway = ec2.CfnInternetGateway(
             self, "igw-wp-serverless"
         )
@@ -40,7 +38,6 @@ class NetworkStack(Stack):
             internet_gateway_id=self.internet_gateway.ref
         )
 
-        # Example: Define public route table and associate with public subnets
         self.public_route_table = ec2.CfnRouteTable(
             self, "public-routetable",
             vpc_id=self.vpc.vpc_id
@@ -58,4 +55,3 @@ class NetworkStack(Stack):
             gateway_id=self.internet_gateway.ref
         )
         
-        # Additional configurations can be placed here, such as VPC Endpoints, Flow Logs, etc.

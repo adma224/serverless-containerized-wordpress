@@ -11,10 +11,8 @@ class AuroraServerlessStack(Stack):
     def __init__(self, scope: Construct, id: str, network_stack: NetworkStack, **kwargs):
         super().__init__(scope, id, **kwargs)
 
-        # Define the username for the database
         username = 'admin'
 
-        # Create a secret in AWS Secrets Manager for the RDS credentials
         db_credentials_secret = secretsmanager.Secret(
             self, "db-credentials",
             generate_secret_string=secretsmanager.SecretStringGenerator(
@@ -24,7 +22,6 @@ class AuroraServerlessStack(Stack):
             )
         )
 
-        # Create a security group for the Aurora Serverless DB Cluster within the VPC
         db_security_group = ec2.SecurityGroup(
             self, "db-group",
             vpc=network_stack.vpc,
@@ -36,7 +33,6 @@ class AuroraServerlessStack(Stack):
             "Allow MySQL access"
         )
 
-        # Define the Aurora Serverless DB Cluster
         self.db_cluster = rds.ServerlessCluster(
             self, "wp-serverless-cluster",
             engine=rds.DatabaseClusterEngine.aurora_mysql(
