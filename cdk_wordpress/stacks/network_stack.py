@@ -6,6 +6,14 @@ from constructs import Construct
 class NetworkStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs):
         super().__init__(scope, id, **kwargs)
+        
+        # Creatng VPC:
+        #   Availability Zones = 2
+        #   CIDR Block = 10.0.0.0/16
+        #   Subnets per AZ = public-subnet, private-subnet
+        #   NAT Gatweay = 2
+        #   Network Load Balancer = 1 (Created Implicitly with the Creation of VPC across 2 AZs)
+        #   Internet Gateway = 1 (Connected to Load Balancer)
 
         self.vpc = ec2.Vpc(
             self, "vpc-wp-serverless",
@@ -27,8 +35,6 @@ class NetworkStack(Stack):
             enable_dns_hostnames=True,
             enable_dns_support=True,
         )
-
-
         self.internet_gateway = ec2.CfnInternetGateway(
             self, "igw-wp-serverless"
         )
